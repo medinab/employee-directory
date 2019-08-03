@@ -1,0 +1,19 @@
+{
+  "name": "employee-directory",
+  "version": "1.0.0",
+  "description": "A simple employee directory built with React and Node js.",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "cd server && node server.js",
+    "client": "cd client && npm run start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "author": "Brandon Medina",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.1",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1"
+  }
+}
