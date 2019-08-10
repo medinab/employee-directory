@@ -1,38 +1,54 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import {Col, Row, Container} from 'react-bootstrap'
 import './App.css';
 import Home from './components/Home';
-import EmployeePage from './components/EmployeePage';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       selectedEmployee: [],
-      employees: []
+      employees: [],
+      filteredEmployees: []
     }
   }
 
   async componentDidMount() {
-    await this.getEmployees();
-    // this.setSelectedEmployee();
+    await this.setEmployees();
   }
 
-  getEmployees = async () => {
-    const response = await fetch('/employee');
+  setEmployees = async () => {
+    const response = await fetch('/api/employee');
     const data = await response.json();
-    console.log(data);
-    this.setState({employees: data.employee});
-    const employ = this.state.employees;
-    console.log(employ);
+    this.setState({employees: data});
+    this.setState({filteredEmployees: data});
   }
 
   setSelectedEmployee = () => {
     this.setState({selectedEmployee:this.state.employees});
   }
 
-  onSearch = () => {
+  filterEmployees = (type, searchValue) => {
+    return this.state.employees.filter((employee) => {
+      if (type === 'location') {
+        if (employee.location[type].toLowerCase().includes(searchValue.toLowerCase())) {
+          return true;
+        }
+      } else {
+        if (employee[type].toLowerCase().includes(searchValue.toLowerCase())) {
+          console.log(employee[type].toLowerCase().includes(searchValue.toLowerCase()));
+          return true;
+        }
+      }
+      return false;
+    });
+  }
 
+  onSearch = (e) => {
+    this.setState({
+      filteredEmployees: this.filterEmployees('name', e.target.value)
+    })
   }
 
   onClickEmployee = (employee) => {
@@ -42,18 +58,14 @@ class App extends Component {
   }
 
   render() {
-    const App = () => (
-      <div>
-        <Switch>
-          <Route exact path='/' render={props=><Home {...props} data={this.state.employees} onSearch={this.onSearch} /> } />
-          <Route path='/employeePage' component={EmployeePage}/>
-        </Switch>
-      </div>
-    )
     return (
-      <Switch>
-        <App/>
-      </Switch>
+      <Container>
+        <Row>
+          <Col>
+            <Route exact path='/' render={()=><Home data={this.state.filteredEmployees} employees={this.state.employees} onSearch={this.onSearch} /> } />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Employee from './Employee';
+import {bounceInDown} from 'react-animations';
+import styled, {keyframes} from 'styled-components';
+
+const Bounce = styled.div`animation: 1s ${keyframes `${bounceInDown}`}`;
 
 class EmployeeList extends Component {
-
-    componentDidMount() {
-        console.log(this.props.data);
-    }
-
     render() {
         return (
-            <div>
-               <ListGroup>
+            <Bounce>
+                <ListGroup>
                 {this.props.data.map((data, key) => (
-                  <Employee key={key} employee={{name: data.name.first + ' ' + data.name.last, email:data.email}} onEmployeeClick={this.props.onEmployeeClick}/>
+                  <Employee key={key} employee={data} onEmployeeClick={this.props.onEmployeeClick}/>
                 ))}
-                </ListGroup> 
-          </div>
+                </ListGroup>
+          </Bounce>
         );
     }
 
