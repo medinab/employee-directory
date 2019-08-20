@@ -37,7 +37,6 @@ class App extends Component {
         }
       } else {
         if (employee[type].toLowerCase().includes(searchValue.toLowerCase())) {
-          console.log(employee[type].toLowerCase().includes(searchValue.toLowerCase()));
           return true;
         }
       }
